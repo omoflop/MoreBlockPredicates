@@ -21,6 +21,9 @@
   "entrypoints": {
     "main": [
       "mod.omoflop.biometextures.BiomeTextures"
+    ],
+    "client":[
+      "mod.omoflop.biometextures.BiomeTexturesClient"
     ]
   },
   "mixins": [

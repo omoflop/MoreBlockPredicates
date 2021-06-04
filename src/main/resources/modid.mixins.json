@@ -6,9 +6,6 @@
   "mixins": [
   ],
   "client": [
-    "TestMixin",
-    "ModelLoaderMixin",
-    "BlockModelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
