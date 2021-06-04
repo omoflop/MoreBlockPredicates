@@ -1,16 +1,17 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "biometextures",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Biome Textures",
+  "description": "This mod allows users to change block textures dependant on what biome they're placed in.",
   "authors": [
-    "Me!"
+    "omoflop",
+    "fennekal"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "",
+    "sources": "https://github.com/Sconed/FabricBiomeTextures"
   },
 
   "license": "CC0-1.0",
@@ -19,7 +20,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "mod.omoflop.biometextures.BiomeTextures"
     ]
   },
   "mixins": [

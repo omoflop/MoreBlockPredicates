@@ -1,12 +1,14 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.fabricmc.example.mixin",
+  "package": "mod.omoflop.biometextures.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],
   "client": [
-    "ExampleMixin"
+    "TestMixin",
+    "ModelLoaderMixin",
+    "BlockModelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
