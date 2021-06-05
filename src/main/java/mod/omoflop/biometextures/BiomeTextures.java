@@ -13,9 +13,13 @@ public class BiomeTextures implements ModInitializer {
 	public void onInitialize() {
 		System.out.println("Hello Fabric world!");
 
-		Block block = new Block(Block.Settings.of(Material.AGGREGATE));
-		Registry.register(Registry.BLOCK, new Identifier("biome_textures:four_sided_furnace"), block);
-		Registry.register(Registry.ITEM,  new Identifier("biome_textures:four_sided_furnace"), new BlockItem(block, new Item.Settings()));
+		Block block  = new Block(Block.Settings.of(Material.AGGREGATE));
+		Block block2 = new Block(Block.Settings.of(Material.AGGREGATE));
+		Registry.register(Registry.BLOCK, new Identifier("biome_textures:test1"), block);
+		Registry.register(Registry.ITEM,  new Identifier("biome_textures:test1"), new BlockItem(block, new Item.Settings()));
+
+		Registry.register(Registry.BLOCK, new Identifier("biome_textures:test2"), block2);
+		Registry.register(Registry.ITEM,  new Identifier("biome_textures:test2"), new BlockItem(block2, new Item.Settings()));
 
 	}
 }

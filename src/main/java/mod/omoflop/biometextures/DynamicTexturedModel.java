@@ -2,7 +2,6 @@ package mod.omoflop.biometextures;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -11,6 +10,7 @@ import java.util.function.Supplier;
 
 import com.mojang.datafixers.util.Pair;
 
+import mod.omoflop.biometextures.util.BiomeUtils;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
@@ -19,10 +19,8 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
-import net.fabricmc.fabric.mixin.biome.BuiltinBiomesAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.ModelBakeSettings;
@@ -36,28 +34,29 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.DustParticleEffect;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.LightType;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 
-public class FourSidedFurnaceModel implements UnbakedModel, BakedModel, FabricBakedModel {
+public class DynamicTexturedModel implements UnbakedModel, BakedModel, FabricBakedModel {
 
-    private static final SpriteIdentifier[] SPRITE_IDS = new SpriteIdentifier[] { 
-            getBlockTexture("minecraft:block/furnace_front_on"),
-            getBlockTexture("minecraft:block/furnace_top")
-    };
-    private Sprite[] SPRITES = new Sprite[SPRITE_IDS.length];
-    private Mesh mesh;
+    private final SpriteIdentifier[] SPRITE_IDS;
+    private Sprite[] SPRITES;
+    private Identifier BIOME;
+
+    public DynamicTexturedModel(SpriteIdentifier spriteDefault, SpriteIdentifier spriteBiome, Identifier biome) {
+        SPRITE_IDS = new SpriteIdentifier[] { 
+            spriteDefault,
+            spriteBiome
+        };
+        BIOME = biome;
+        SPRITES = new Sprite[SPRITE_IDS.length];
+    }
 
     //! Stuff for rendering the model as an item, may not use in the final mod
-    private static final Identifier DEFAULT_BLOCK_MODEL = new Identifier("minecraft:block/block");
+    private final Identifier DEFAULT_BLOCK_MODEL = new Identifier("minecraft:block/block");
     private ModelTransformation transformation;
 
     //! Depends on the default block model to show as an item properly
@@ -106,20 +105,13 @@ public class FourSidedFurnaceModel implements UnbakedModel, BakedModel, FabricBa
     }
 
     private Mesh getMesh(World world, BlockPos pos) {
-        Identifier biomeId = getBiome(world, pos);
+        Identifier biomeId = BiomeUtils.getIdentifier(world.getBiome(pos));
         int id = 0;
-        if (biomeId.getPath().equals("beach")) {
-            id = 0;
-        } else {
-            id = 1;
-        }
+        if (biomeId.equals(BIOME)) id = 1;
         return makeTexturedCube(SPRITES[id]);
     }
 
-    private static Identifier getBiome(World world, BlockPos pos) {
-        return world.getRegistryManager().get(Registry.BIOME_KEY).getId(world.getBiome(pos));
-    }
-
+    
     
 
     
