@@ -81,10 +81,6 @@ public class DynamicTexturedModel implements UnbakedModel, BakedModel, FabricBak
         return true;
     }
 
-    private static SpriteIdentifier getBlockTexture(String name) {
-        return new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier(name));
-    }
-
     // False to trigger fabric's rendering
     @Override
     public boolean isVanillaAdapter() {
@@ -93,7 +89,8 @@ public class DynamicTexturedModel implements UnbakedModel, BakedModel, FabricBak
 
     @Override
     public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
-        ClientWorld world = MinecraftClient.getInstance().world;
+        MinecraftClient inst = MinecraftClient.getInstance();
+        ClientWorld world = inst.world;
         context.meshConsumer().accept(getMesh(world, pos));
     }
 
@@ -155,6 +152,8 @@ public class DynamicTexturedModel implements UnbakedModel, BakedModel, FabricBak
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
         MeshBuilder builder = renderer.meshBuilder();
         QuadEmitter emitter = builder.getEmitter();
+
+        
 
         for(Direction dir : Direction.values()) {
             // Add a new face to the mesh

@@ -28,6 +28,8 @@ public class TestModelProvider implements ModelResourceProvider {
 
     @Override
     public @Nullable UnbakedModel loadModelResource(Identifier identifier, ModelProviderContext context) throws ModelProviderException {
+        
+        
         if(identifier.equals(TEST_1_BLOCK) || identifier.equals(TEST_1_ITEM)) {
             return DYNAMIC_TEST_MODEL_1;
         } else if (identifier.equals(TEST_2_BLOCK) || identifier.equals(TEST_2_ITEM)) {
