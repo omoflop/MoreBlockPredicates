@@ -1,4 +1,4 @@
-package mod.omoflop.biometextures;
+package mod.omoflop.vbm;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,26 +10,42 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
-import mod.omoflop.biometextures.data.VBTCondition;
-import mod.omoflop.biometextures.data.conditions.ConditionBiome;
+import mod.omoflop.vbm.data.VBMCondition;
+import mod.omoflop.vbm.util.Utils;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 
-public class ResourcePackLoader {
+public class VBMResourceManager {
     /**
      * Stores the conditions for model swapping
      */
-    public static final HashMap<Identifier, VBTCondition[]> blockModelConditions = new HashMap<>();
+    public static final HashMap<Identifier, VBMCondition[]> blockModelConditions = new HashMap<>();
+
+    public static BlockState executeCondition(Identifier blockIdentifier, BlockPos pos) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        VBMCondition[] conditions = blockModelConditions.get(blockIdentifier);
+        for (VBMCondition vbtCondition : conditions) {
+            if (vbtCondition.meetsCondition(client.world, pos)) {
+                Block b = Utils.getBlock(vbtCondition.model);
+                return b.getDefaultState();
+            }
+        }
+        return Utils.getBlock(blockIdentifier).getDefaultState();
+    }
 
     public static void initalize() {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES)
         .registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
             public Identifier getFabricId() {
-                return new Identifier("vbt:resource");
+                return new Identifier("vbm:resource");
             }
 
             @Override
@@ -66,43 +82,19 @@ public class ResourcePackLoader {
         debugPrint();
     }
 
+    
+
     /**
      * Proccesses the JSON overrides in our special format
      * @param overrides
      */
     private static void processOverrides(Identifier baseModel, JsonArray overrides) {
-        VBTCondition[] conditions = new VBTCondition[overrides.size()];
+        VBMCondition[] conditions = new VBMCondition[overrides.size()];
         for (int i = 0; i < conditions.length; i++) {
-            JsonObject curEntry = overrides.get(i).getAsJsonObject();
-            if (validOverrideEntry(curEntry)) {
-                Identifier modelId = new Identifier(curEntry.get("model").getAsString());
-                JsonObject condition = curEntry.get("condition").getAsJsonObject();
-                String type = condition.get("type").getAsString();
-                if (type.equals("vbt:biome")) {
-                    conditions[i] = new ConditionBiome(condition, modelId);
-                }
-            }
+            conditions[i] = VBMCondition.parseJson(overrides.get(i).getAsJsonObject());
         }
-        blockModelConditions.put(baseModel, conditions);
-    }
 
-    /**
-     * Checks if a override entry is correctly formatted
-     * @param entry
-     * @return
-     */
-    private static boolean validOverrideEntry(JsonObject entry) {
-        boolean hasCondition = entry.has("condition");
-        boolean hasModel = entry.has("model");
-        if (hasCondition && hasModel) {
-            JsonObject condition = entry.get("condition").getAsJsonObject();
-            boolean hasType = condition.has("type");
-            boolean hasBiome = condition.has("biome");
-            if (hasType && hasBiome) {
-                return true;
-            }
-        }  
-        return false;
+        blockModelConditions.put(baseModel, conditions);
     }
 
     
@@ -124,7 +116,7 @@ public class ResourcePackLoader {
     private static void debugPrint() {
         for (Identifier modelId : blockModelConditions.keySet()) {
             System.out.println(modelId.toString());
-            for (VBTCondition condition : blockModelConditions.get(modelId)) {
+            for (VBMCondition condition : blockModelConditions.get(modelId)) {
                 System.out.println("\t"+condition.toString());
             }
         }

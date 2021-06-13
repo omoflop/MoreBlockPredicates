@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "biometextures",
+  "id": "vbm",
   "version": "${version}",
 
-  "name": "Biome Textures",
+  "name": "Variable Block Models",
   "description": "This mod allows users to change block textures dependant on what biome they're placed in.",
   "authors": [
     "omoflop",
@@ -20,16 +20,16 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "mod.omoflop.biometextures.BiomeTextures"
+      "mod.omoflop.vbm.VariableBlockModels"
     ],
     "client":[
-      "mod.omoflop.biometextures.BiomeTexturesClient"
+      "mod.omoflop.vbm.VariableBlockModelsClient"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "vbm.mixins.json"
   ],
-
+  "accessWidener": "vbm.accesswidener",
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",

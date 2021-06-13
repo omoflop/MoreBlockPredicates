@@ -1,4 +1,4 @@
-package mod.omoflop.biometextures.data.conditions;
+package mod.omoflop.vbm.data.conditions;
 
 import java.util.Arrays;
 
@@ -6,17 +6,18 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import mod.omoflop.biometextures.data.ConditionType;
-import mod.omoflop.biometextures.data.VBTCondition;
+import mod.omoflop.vbm.data.ConditionType;
+import mod.omoflop.vbm.data.VBMCondition;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 @ConditionType(identifier = "vbt:biome", arguments = {"biome"})
-public class ConditionBiome extends VBTCondition {
+public class BiomeCondition extends VBMCondition {
 
-    public final Identifier model;
     public final Identifier[] biomes;
 
-    public ConditionBiome(JsonObject condition, Identifier model) {
+    public BiomeCondition(JsonObject condition, Identifier model) {
         super(condition, model);
         JsonElement biome = condition.get("biome");
         if (biome.isJsonArray()) {
@@ -28,12 +29,11 @@ public class ConditionBiome extends VBTCondition {
         } else {
             biomes = new Identifier[] {new Identifier(biome.getAsString())};
         }
-        this.model = model;
     }
 
     @Override
-    public Identifier getModel() {
-        return model;
+    public boolean meetsCondition(World world, BlockPos pos) {
+        return false;
     }
 
     public String toString() {

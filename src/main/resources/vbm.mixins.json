@@ -1,11 +1,14 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "mod.omoflop.biometextures.mixin",
+  "package": "mod.omoflop.vbm.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],
   "client": [
+    "ChunkRebuildTaskMixin",
+    "BlockRenderManagerMixin",
+    "BlockModelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

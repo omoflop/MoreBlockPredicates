@@ -31,6 +31,10 @@ dependencies {
 	// You may need to force-disable transitiveness on them.
 }
 
+minecraft {
+	accessWidener "src/main/resources/vbm.accesswidener"
+}
+
 processResources {
 	inputs.property "version", project.version
 
@@ -38,6 +42,8 @@ processResources {
 		expand "version": project.version
 	}
 }
+
+
 
 tasks.withType(JavaCompile).configureEach {
 	// ensure that the encoding is set to UTF-8, no matter what the system default is
