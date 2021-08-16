@@ -1,41 +1,30 @@
 {
   "schemaVersion": 1,
-  "id": "vbm",
+  "id": "mbp",
   "version": "${version}",
-
-  "name": "Variable Block Models",
-  "description": "This mod allows users to change block textures dependant on what biome they're placed in.",
+  "name": "More Block Predicates",
+  "description": "Adds more predicates to block models, like biome, position, and light level!",
   "authors": [
-    "omoflop",
-    "fennekal"
+    "omoflop"
   ],
-  "contact": {
-    "homepage": "",
-    "sources": "https://github.com/Sconed/FabricBiomeTextures"
-  },
-
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
-
-  "environment": "*",
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/mbp/icon.png",
+  "environment": "client",
   "entrypoints": {
-    "main": [
-      "mod.omoflop.vbm.VariableBlockModels"
+    "client": [
+      "mod.omoflop.mbp.client.MBPClient"
     ],
-    "client":[
-      "mod.omoflop.vbm.VariableBlockModelsClient"
+    "main": [
+      "mod.omoflop.mbp.MBPMod"
     ]
   },
   "mixins": [
-    "vbm.mixins.json"
+    "mbp.mixins.json"
   ],
-  "accessWidener": "vbm.accesswidener",
   "depends": {
-    "fabricloader": ">=0.7.4",
+    "fabricloader": ">=0.11.6",
     "fabric": "*",
-    "minecraft": "1.16.x"
-  },
-  "suggests": {
-    "another-mod": "*"
+    "minecraft": "1.17.1"
   }
 }

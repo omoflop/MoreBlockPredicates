@@ -1,14 +1,14 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "mod.omoflop.vbm.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "package": "mod.omoflop.mbp.mixin",
+  "compatibilityLevel": "JAVA_16",
   "mixins": [
   ],
   "client": [
-    "ChunkRebuildTaskMixin",
+    "BakedModelManagerMixin",
     "BlockRenderManagerMixin",
-    "BlockModelRendererMixin"
+    "StateManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
