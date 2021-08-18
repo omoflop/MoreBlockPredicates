@@ -8,7 +8,7 @@
   "client": [
     "BakedModelManagerMixin",
     "BlockRenderManagerMixin",
-    "StateManagerMixin"
+    "ChunkRenderPipelineMixin"
   ],
   "injectors": {
     "defaultRequire": 1
