@@ -5,9 +5,7 @@ import net.fabricmc.api.ModInitializer;
 public class MBPMod implements ModInitializer {
 
     @Override
-    public void onInitialize() {
-
-    }
+    public void onInitialize() {}
 
 
 }

@@ -29,7 +29,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Map;
 import java.util.Random;
 
-
+/*
+    Unused in sodium
+ */
+@Deprecated()
 @Mixin(value = BlockRenderManager.class, priority = 2000)
 public abstract class BlockRenderManagerMixin {
 
@@ -38,9 +41,12 @@ public abstract class BlockRenderManagerMixin {
 
     @Inject(method = "renderBlock", at = @At("HEAD"), cancellable = true)
     public void renderBlock(BlockState state, BlockPos pos, BlockRenderView world, MatrixStack matrix, VertexConsumer vertexConsumer, boolean cull, Random random, CallbackInfoReturnable<Boolean> cir) {
-        BakedModel model = BlockRendering.tryModelOverride(this.models, world, state, pos);
-        if (model != null) {
-            cir.setReturnValue(this.blockModelRenderer.render(world, model, state, pos, matrix, vertexConsumer, cull, random, state.getRenderingSeed(pos), OverlayTexture.DEFAULT_UV));
+        BlockRenderType blockRenderType = state.getRenderType();
+        if (blockRenderType == BlockRenderType.MODEL) {
+            BakedModel newModel = BlockRendering.tryModelOverride(this.models, world, state, pos);
+            if (newModel != null) {
+                cir.setReturnValue(this.blockModelRenderer.render(world, newModel, state, pos, matrix, vertexConsumer, cull, random, state.getRenderingSeed(pos), OverlayTexture.DEFAULT_UV));
+            }
         }
     }
 

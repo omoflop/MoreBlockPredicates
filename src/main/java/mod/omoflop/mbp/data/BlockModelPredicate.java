@@ -3,6 +3,7 @@ package mod.omoflop.mbp.data;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import mod.omoflop.mbp.client.MBPClient;
 import mod.omoflop.mbp.data.logic.Not;
 import mod.omoflop.mbp.data.logic.Or;
 
@@ -31,10 +32,10 @@ public abstract class BlockModelPredicate implements WorldViewCondition {
                 try {
                     predicates.add(HANDLERS.get(entries.getKey()).apply(entries.getValue()));
                 } catch (JsonParseException e) {
-                    System.out.printf("Failed to load predicate \"%s\"! Reason: %s\n", entries.getKey(), e.getMessage());
+                    MBPClient.LOGGER.warning(String.format("Failed to load predicate \"%s\"! Reason: %s", entries.getKey(), e.getMessage()));
                 }
             } else {
-                System.out.printf("Unhandled predicate \"%s\"!\n", entries.getKey());
+                MBPClient.LOGGER.warning(String.format("Unhandled predicate \"%s\"!", entries.getKey()));
             }
         }
 

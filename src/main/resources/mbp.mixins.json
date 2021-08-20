@@ -3,12 +3,13 @@
   "minVersion": "0.8",
   "package": "mod.omoflop.mbp.mixin",
   "compatibilityLevel": "JAVA_16",
+  "plugin": "mod.omoflop.mbp.MBPMixinPlugin",
   "mixins": [
   ],
   "client": [
     "BakedModelManagerMixin",
     "BlockRenderManagerMixin",
-    "ChunkRenderPipelineMixin"
+    "SodiumChunkRenderRebuildTaskMixin"
   ],
   "injectors": {
     "defaultRequire": 1

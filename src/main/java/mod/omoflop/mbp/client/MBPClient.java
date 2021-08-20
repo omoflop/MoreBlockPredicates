@@ -12,24 +12,27 @@ import net.fabricmc.loader.launch.common.FabricLauncher;
 import net.fabricmc.loom.configuration.FabricApiExtension;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
+import org.spongepowered.asm.launch.MixinLaunchPlugin;
+
+import java.util.logging.Logger;
 
 @Environment(EnvType.CLIENT)
 public class MBPClient implements ClientModInitializer {
 
-    public static boolean HAS_SODIUM = false;
+    public static final Logger LOGGER = Logger.getLogger("mbp");
 
     @Override
     public void onInitializeClient() {
-        HAS_SODIUM = FabricLoader.getInstance().isModLoaded("sodium");
-        System.out.println("Starting MBP" + (HAS_SODIUM ? " with sodium compatability!" : ""));
+
 
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new MBPReloadListener());
 
         ModelLoadingRegistryImpl.INSTANCE.registerModelProvider((mm, out) -> {
-            System.out.println("Fetching wanted models: #" + MBPReloadListener.WANTED_MODELS.size());
             for (Identifier id : MBPReloadListener.WANTED_MODELS) {
                 out.accept(id);
             }
         });
+
+
     }
 }

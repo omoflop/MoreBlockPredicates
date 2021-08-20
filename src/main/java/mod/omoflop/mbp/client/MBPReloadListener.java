@@ -53,12 +53,11 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
                     }
                     MBPData.PREDICATES.put(block.get(), Collections.unmodifiableList(whenList));
                 } else {
-                    System.out.println("Block entry not found: " + blockTarget);
+                    MBPClient.LOGGER.info("Block entry not found: " + blockTarget);
                 }
 
             } catch (JsonParseException | IOException ignored) {
-                // L
-                System.out.println(ignored);
+                MBPClient.LOGGER.warning(ignored.toString());
             }
         }
 
