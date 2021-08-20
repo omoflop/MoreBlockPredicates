@@ -15,7 +15,7 @@ public class MBPMixinPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         HAS_SODIUM = FabricLoader.getInstance().isModLoaded("sodium");
-        System.out.println("Starting MBP" + (HAS_SODIUM ? " with sodium compatibility!" : ""));
+        MBPClient.log("INFO", "Starting MBP" + (HAS_SODIUM ? " with sodium compatibility!" : ""));
     }
 
     @Override

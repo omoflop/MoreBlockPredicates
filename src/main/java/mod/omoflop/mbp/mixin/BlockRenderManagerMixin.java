@@ -29,10 +29,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Map;
 import java.util.Random;
 
-/*
-    Unused in sodium
- */
-@Deprecated()
 @Mixin(value = BlockRenderManager.class, priority = 2000)
 public abstract class BlockRenderManagerMixin {
 

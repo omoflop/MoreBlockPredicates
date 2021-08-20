@@ -23,6 +23,7 @@ public abstract class BlockModelPredicate implements WorldViewCondition {
         put("biome", InBiome::parse);
         put("state", IsBlockState::parse);
         put("light_range", LightRange::parse);
+        put("adjacent_block", AdjacentBlock::parse);
     }};
 
     public static ArrayList<BlockModelPredicate> parseFromJson(JsonObject object) {
@@ -32,10 +33,10 @@ public abstract class BlockModelPredicate implements WorldViewCondition {
                 try {
                     predicates.add(HANDLERS.get(entries.getKey()).apply(entries.getValue()));
                 } catch (JsonParseException e) {
-                    MBPClient.LOGGER.warning(String.format("Failed to load predicate \"%s\"! Reason: %s", entries.getKey(), e.getMessage()));
+                    MBPClient.log("WARN", String.format("Failed to load predicate \"%s\"! Reason: %s", entries.getKey(), e.getMessage()));
                 }
             } else {
-                MBPClient.LOGGER.warning(String.format("Unhandled predicate \"%s\"!", entries.getKey()));
+                MBPClient.log("WARN", String.format("Unhandled predicate \"%s\"!", entries.getKey()));
             }
         }
 

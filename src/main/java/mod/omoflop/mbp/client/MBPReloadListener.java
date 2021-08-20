@@ -5,7 +5,6 @@ import mod.omoflop.mbp.MBPData;
 import mod.omoflop.mbp.data.logic.When;
 import mod.omoflop.mbp.util.Utils;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.fabricmc.fabric.impl.client.model.ModelLoadingRegistryImpl;
 import net.minecraft.block.Block;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -53,11 +52,11 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
                     }
                     MBPData.PREDICATES.put(block.get(), Collections.unmodifiableList(whenList));
                 } else {
-                    MBPClient.LOGGER.info("Block entry not found: " + blockTarget);
+                    MBPClient.log("WARN","Block entry not found: " + blockTarget);
                 }
 
             } catch (JsonParseException | IOException ignored) {
-                MBPClient.LOGGER.warning(ignored.toString());
+                MBPClient.log("ERROR",ignored.toString());
             }
         }
 

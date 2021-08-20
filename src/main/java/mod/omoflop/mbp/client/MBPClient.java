@@ -14,17 +14,23 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.launch.MixinLaunchPlugin;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Environment(EnvType.CLIENT)
 public class MBPClient implements ClientModInitializer {
 
-    public static final Logger LOGGER = Logger.getLogger("mbp");
+    public static void log(String level, String format, Object... params) {
+        String ts = LocalTime.now().toString();
+        String time = ts.substring(0, ts.indexOf("."));
+        System.out.printf("[%s] [%s/%s]: %s\n", time, "mbp", level, format.formatted(params));
+    }
 
     @Override
     public void onInitializeClient() {
-
-
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new MBPReloadListener());
 
         ModelLoadingRegistryImpl.INSTANCE.registerModelProvider((mm, out) -> {

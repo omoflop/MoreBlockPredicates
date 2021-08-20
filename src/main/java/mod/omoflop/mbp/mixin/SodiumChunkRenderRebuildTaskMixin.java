@@ -3,6 +3,7 @@ package mod.omoflop.mbp.mixin;
 import com.google.common.base.Optional;
 import me.jellysquid.mods.sodium.client.render.chunk.ChunkRenderer;
 import me.jellysquid.mods.sodium.client.render.chunk.tasks.ChunkRenderRebuildTask;
+import me.jellysquid.mods.sodium.client.world.WorldSlice;
 import mod.omoflop.mbp.MBPData;
 import mod.omoflop.mbp.accessor.BakedModelManagerAccess;
 import mod.omoflop.mbp.common.BlockRendering;
@@ -25,11 +26,13 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(value = ChunkRenderRebuildTask.class)
 public class SodiumChunkRenderRebuildTaskMixin {
 
-    @Unique private BlockPos.Mutable blockPos;
+    @Unique private int x = 0;
+    @Unique private int y = 0;
+    @Unique private int z = 0;
 
     @Redirect(method = "performBuild", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/BlockModels;getModel(Lnet/minecraft/block/BlockState;)Lnet/minecraft/client/render/model/BakedModel;"))
     public BakedModel getModelRedirect(BlockModels models, BlockState state) {
-        BakedModel newModel = BlockRendering.tryModelOverride(models, MinecraftClient.getInstance().world, state,blockPos);
+        BakedModel newModel = BlockRendering.tryModelOverride(models, MinecraftClient.getInstance().world, state, new BlockPos(x, y, z));
         if (newModel != null)
             return newModel;
 
@@ -37,9 +40,11 @@ public class SodiumChunkRenderRebuildTaskMixin {
         return models.getModel(state);
     }
 
-    @Redirect(method = "performBuild", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/BlockPos$Mutable;set(III)Lnet/minecraft/util/math/BlockPos$Mutable;"))
-    public BlockPos.Mutable setRedirect(BlockPos.Mutable mutable, int x, int y, int z) {
-        blockPos = mutable.set(x,y,z);
-        return blockPos;
+    @Redirect(method = "performBuild", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/world/WorldSlice;getBlockState(III)Lnet/minecraft/block/BlockState;"))
+    public BlockState getBlockStateRedirect(WorldSlice worldSlice, int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        return worldSlice.getBlockState(x,y,z);
     }
 }
