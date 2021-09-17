@@ -5,27 +5,62 @@ import com.google.gson.JsonObject;
 import mod.omoflop.mbp.data.BlockModelPredicate;
 import mod.omoflop.mbp.data.WorldViewCondition;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
-import java.util.List;
+import java.util.*;
 
 public class When implements WorldViewCondition {
 
     final And conditions;
-    public final Identifier resultModel;
+    private final List<Identifier> applyModelList;
+    private final Random r = new Random();
 
-    public When(And conditions, Identifier resultModel) {
+    public When(And conditions, List<Identifier> applyModelList) {
         this.conditions = conditions;
-        this.resultModel = new Identifier(resultModel.getNamespace(), "block/"+resultModel.getPath());
+        this.applyModelList = Collections.unmodifiableList(applyModelList);
+    }
+
+    public Identifier getModel(long seed) {
+        return applyModelList.get((int) (Math.abs(seed) % applyModelList.size()));
+    }
+
+    public List<Identifier> getModels() {
+        return applyModelList;
     }
 
     public static When parse(JsonElement arg) {
         JsonObject object = arg.getAsJsonObject();
         List<BlockModelPredicate> conditions = BlockModelPredicate.parseFromJson(object.getAsJsonObject("when"));
-        return new When(new And(conditions), new Identifier(object.get("apply").getAsString()));
+
+        List<Identifier> applyModelList;
+        JsonElement apply = object.get("apply");
+        if (apply.isJsonArray()) {
+            applyModelList = new ArrayList<>();
+            for (JsonElement entry : apply.getAsJsonArray()) {
+                String applyId;
+                int weight = 1;
+                if (entry.isJsonObject()) {
+                    JsonObject obj = entry.getAsJsonObject();
+                    applyId = obj.get("model").getAsString();
+                    if (obj.has("weight")) weight = obj.get("weight").getAsInt();
+                } else {
+                    applyId = entry.getAsString();
+                }
+
+                String[] id = applyId.split(":");
+                Identifier currentModelID = new Identifier(id[0], "block/" + id[1]);
+                for (int i = 0; i < weight; i++) {
+                    applyModelList.add(currentModelID);
+                }
+            }
+        } else {
+            String[] id = apply.getAsString().split(":");
+            applyModelList = List.of(new Identifier(id[0], "block/" + id[1]));
+        }
+
+        return new When(new And(conditions), applyModelList);
     }
 
     @Override

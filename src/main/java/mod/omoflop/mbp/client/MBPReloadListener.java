@@ -1,7 +1,9 @@
 package mod.omoflop.mbp.client;
 
 import com.google.gson.*;
+import me.jellysquid.mods.sodium.client.SodiumClientMod;
 import mod.omoflop.mbp.MBPData;
+import mod.omoflop.mbp.MBPMixinPlugin;
 import mod.omoflop.mbp.data.logic.When;
 import mod.omoflop.mbp.util.Utils;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
@@ -19,8 +21,6 @@ import java.util.Optional;
 
 public class MBPReloadListener implements SimpleSynchronousResourceReloadListener {
     public static final Identifier IDENTIFIER = new Identifier("mbp:predicateloader");
-    public static final int VERSION = 0;
-    public static final List<Identifier> WANTED_MODELS = new ArrayList<>();
 
     @Override
     public Identifier getFabricId() {
@@ -30,7 +30,6 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
     @Override
     public void reload(ResourceManager manager) {
         MBPData.PREDICATES.clear();
-        WANTED_MODELS.clear();
 
         JsonParser parser = new JsonParser();
         for (Identifier id : manager.findResources("mbp", path -> path.endsWith(".json"))) {
@@ -48,7 +47,6 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
                     for(JsonElement overrideEntry : overrides) {
                         When when = When.parse(overrideEntry);
                         whenList.add(when);
-                        WANTED_MODELS.add(when.resultModel);
                     }
                     MBPData.PREDICATES.put(block.get(), Collections.unmodifiableList(whenList));
                 } else {
@@ -59,8 +57,6 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
                 MBPClient.log("ERROR",ignored.toString());
             }
         }
-
-
     }
 
     // i found this on stack overflow two months ago :)
@@ -70,7 +66,7 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
      * @return
      * @throws IOException
      */
-    private static String inputStreamToString(InputStream stream) throws IOException {
+    static String inputStreamToString(InputStream stream) throws IOException {
         ByteArrayOutputStream result = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         for (int length; (length = stream.read(buffer)) != -1;) {

@@ -1,6 +1,7 @@
-package mod.omoflop.mbp.data;
+package mod.omoflop.mbp.data.conditions;
 
 import com.google.gson.JsonElement;
+import mod.omoflop.mbp.data.BlockModelPredicate;
 import mod.omoflop.mbp.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -24,7 +25,7 @@ public class InBiome extends BlockModelPredicate {
         return (w.getBiome(pos).equals(Utils.getBiome(biomeID).get()));
     }
 
-    static InBiome parse(JsonElement arg) {
+    public static InBiome parse(JsonElement arg) {
         return new InBiome(new Identifier(arg.getAsString()));
     }
 }

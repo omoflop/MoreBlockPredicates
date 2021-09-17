@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import mod.omoflop.mbp.client.MBPClient;
+import mod.omoflop.mbp.data.conditions.*;
 import mod.omoflop.mbp.data.logic.Not;
 import mod.omoflop.mbp.data.logic.Or;
 
@@ -19,11 +20,11 @@ public abstract class BlockModelPredicate implements WorldViewCondition {
         put("NOT", Not::parse);
 
         // Actual conditions
+        put("adjacent_block", AdjacentBlock::parse);
         put("coordinate_range", CoordinateRange::parse);
         put("biome", InBiome::parse);
         put("state", IsBlockState::parse);
         put("light_range", LightRange::parse);
-        put("adjacent_block", AdjacentBlock::parse);
     }};
 
     public static ArrayList<BlockModelPredicate> parseFromJson(JsonObject object) {

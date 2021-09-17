@@ -4,8 +4,10 @@ import com.google.common.base.Optional;
 import mod.omoflop.mbp.data.logic.When;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.BlockView;
 
 import java.util.HashMap;
@@ -18,7 +20,9 @@ public class MBPData {
         if (PREDICATES.containsKey(state.getBlock())) {
             for (When when : PREDICATES.get(state.getBlock())) {
                 if (when.meetsCondition(world, pos, state)) {
-                    return Optional.of(when.resultModel);
+                    long seed = MathHelper.hashCode(pos);
+
+                    return Optional.of(when.getModel(seed));
                 }
             }
         }

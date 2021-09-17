@@ -31,14 +31,9 @@ public class MBPClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+
+        ModelLoadingRegistryImpl.INSTANCE.registerModelProvider(new MBPResourceProvider());
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new MBPReloadListener());
-
-        ModelLoadingRegistryImpl.INSTANCE.registerModelProvider((mm, out) -> {
-            for (Identifier id : MBPReloadListener.WANTED_MODELS) {
-                out.accept(id);
-            }
-        });
-
 
     }
 }
