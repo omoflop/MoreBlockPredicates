@@ -9,6 +9,9 @@
   "client": [
     "BakedModelManagerMixin",
     "BlockRenderManagerMixin",
+    "ItemEntityRendererMixin",
+    "ItemFrameEntityRendererMixin",
+    "ItemRendererMixin",
     "SodiumChunkRenderRebuildTaskMixin"
   ],
   "injectors": {

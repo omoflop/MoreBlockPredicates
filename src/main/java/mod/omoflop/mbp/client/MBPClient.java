@@ -10,6 +10,8 @@ import net.fabricmc.fabric.impl.resource.loader.FabricModResourcePack;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.launch.common.FabricLauncher;
 import net.fabricmc.loom.configuration.FabricApiExtension;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.launch.MixinLaunchPlugin;
@@ -22,6 +24,9 @@ import java.util.logging.Logger;
 
 @Environment(EnvType.CLIENT)
 public class MBPClient implements ClientModInitializer {
+
+    public static Entity currentEntity;
+
 
     public static void log(String level, String format, Object... params) {
         String ts = LocalTime.now().toString();
