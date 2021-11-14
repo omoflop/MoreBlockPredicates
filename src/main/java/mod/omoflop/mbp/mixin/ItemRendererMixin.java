@@ -38,14 +38,14 @@ public abstract class ItemRendererMixin {
     @Unique private World world;
     @Unique private Entity entity;
 
-    @Inject(method = "getHeldItemModel", at = @At(value = "HEAD"))
+    @Inject(method = "getModel", at = @At(value = "HEAD"))
     private void getHeldItemModelVariableStealerLol(ItemStack stack, World world, LivingEntity entity, int seed, CallbackInfoReturnable<BakedModel> cir) {
         this.world = world;
         this.entity = entity;
     }
 
 
-    @Redirect(method = "getHeldItemModel", at = @At(value = "INVOKE",target = "Lnet/minecraft/client/render/item/ItemModels;getModel(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/client/render/model/BakedModel;"))
+    @Redirect(method = "getModel", at = @At(value = "INVOKE",target = "Lnet/minecraft/client/render/item/ItemModels;getModel(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/client/render/model/BakedModel;"))
     private BakedModel getHeldItemModelMixin(ItemModels itemModels, ItemStack stack) {
         if (world == null || entity == null) return itemModels.getModel(stack);
 

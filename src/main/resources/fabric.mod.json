@@ -24,8 +24,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.11.6",
-    "fabric": "*",
-    "minecraft": "1.17.1"
+    "fabric": "*"
   },
   "recommends": {
     "sodium": "*"

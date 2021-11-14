@@ -5,22 +5,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.impl.client.model.ModelLoadingRegistryImpl;
-import net.fabricmc.fabric.impl.registry.sync.FabricRegistry;
-import net.fabricmc.fabric.impl.resource.loader.FabricModResourcePack;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.launch.common.FabricLauncher;
-import net.fabricmc.loom.configuration.FabricApiExtension;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
-import org.spongepowered.asm.launch.MixinLaunchPlugin;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Environment(EnvType.CLIENT)
 public class MBPClient implements ClientModInitializer {
