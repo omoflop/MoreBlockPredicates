@@ -1,10 +1,8 @@
 package mod.omoflop.mbp;
 
-import com.google.common.base.Optional;
 import mod.omoflop.mbp.data.logic.When;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -12,6 +10,7 @@ import net.minecraft.world.BlockView;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class MBPData {
     public static final HashMap<Block, List<When>> PREDICATES = new HashMap<>();
@@ -27,7 +26,7 @@ public class MBPData {
             }
         }
         
-        return Optional.absent();
+        return Optional.empty();
     }
 
 }

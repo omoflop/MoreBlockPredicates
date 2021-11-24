@@ -1,6 +1,5 @@
 package mod.omoflop.mbp.mixin;
 
-import com.google.common.base.Optional;
 import mod.omoflop.mbp.MBPData;
 import mod.omoflop.mbp.accessor.BakedModelManagerAccess;
 import mod.omoflop.mbp.client.MBPClient;
@@ -15,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -26,8 +26,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Optional;
 
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
@@ -75,20 +76,23 @@ public abstract class ItemRendererMixin {
         if (entity == null) entity = MBPClient.currentEntity;
         if (entity == null) entity = MinecraftClient.getInstance().player;
 
-        BlockPos targetPos = entity.getBlockPos();
-        if (entity instanceof PlayerEntity player) {
-            HitResult hit = player.raycast(8, MinecraftClient.getInstance().getTickDelta(), false);
-            if (hit instanceof BlockHitResult blockHitResult) {
-                targetPos = blockHitResult.getBlockPos().add(blockHitResult.getSide().getVector());
+        if (entity != null) {
+            BlockPos targetPos = entity.getBlockPos();
+            if (entity instanceof PlayerEntity player) {
+                HitResult hit = player.raycast(8, MinecraftClient.getInstance().getTickDelta(), false);
+                if (hit instanceof BlockHitResult blockHitResult) {
+                    targetPos = blockHitResult.getBlockPos().add(blockHitResult.getSide().getVector());
+                }
             }
+
+            Optional<Identifier> identifier = MBPData.meetsPredicate(world, targetPos, Block.getBlockFromItem(stack.getItem()).getDefaultState());
+            if (identifier.isPresent()) {
+                BakedModelManagerAccess access = BakedModelManagerAccess.of(models.getModelManager());
+                model = access.reallyGetModel(identifier.get());
+            }
+            MBPClient.currentEntity = null;
         }
 
-        Optional<Identifier> identifier = MBPData.meetsPredicate(world, targetPos, Block.getBlockFromItem(stack.getItem()).getDefaultState());
-        if (identifier.isPresent()) {
-            BakedModelManagerAccess access = BakedModelManagerAccess.of(models.getModelManager());
-            model = access.reallyGetModel(identifier.get());
-        }
         this.renderBakedItemModel(model, stack, light, overlay, matrices, vertices);
-        MBPClient.currentEntity = null;
     }
 }

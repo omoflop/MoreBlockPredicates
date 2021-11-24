@@ -1,6 +1,5 @@
 package mod.omoflop.mbp.common;
 
-import com.google.common.base.Optional;
 import mod.omoflop.mbp.MBPData;
 import mod.omoflop.mbp.accessor.BakedModelManagerAccess;
 import net.minecraft.block.BlockRenderType;
@@ -11,6 +10,8 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
+
+import java.util.Optional;
 
 public class BlockRendering {
 
