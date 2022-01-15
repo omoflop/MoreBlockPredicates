@@ -8,10 +8,14 @@
   ],
   "client": [
     "BakedModelManagerMixin",
+    "BlockDustParticleMixin",
+    "BlockMarkerParticleMixin",
     "BlockRenderManagerMixin",
+    "FallingBlockEntityRendererMixin",
     "ItemEntityRendererMixin",
     "ItemFrameEntityRendererMixin",
     "ItemRendererMixin",
+    "PistonBlockEntityRendererMixin",
     "SodiumChunkRenderRebuildTaskMixin"
   ],
   "injectors": {

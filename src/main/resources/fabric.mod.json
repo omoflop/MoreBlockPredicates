@@ -14,9 +14,6 @@
   "entrypoints": {
     "client": [
       "mod.omoflop.mbp.client.MBPClient"
-    ],
-    "main": [
-      "mod.omoflop.mbp.MBPMod"
     ]
   },
   "mixins": [

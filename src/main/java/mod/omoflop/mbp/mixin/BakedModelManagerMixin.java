@@ -9,6 +9,8 @@ import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 
 import java.util.Map;
 
@@ -23,7 +25,5 @@ public abstract class BakedModelManagerMixin implements BakedModelManagerAccess 
     public BakedModel reallyGetModel(Identifier model) {
         return models.getOrDefault(model, this.getMissingModel());
     }
-
-
 
 }
