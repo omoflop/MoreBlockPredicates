@@ -25,7 +25,7 @@ public abstract class BlockDustParticleMixin extends SpriteBillboardParticle {
 
     @Inject(at = @At(value = "TAIL"), method = "<init>(Lnet/minecraft/client/world/ClientWorld;DDDDDDLnet/minecraft/block/BlockState;Lnet/minecraft/util/math/BlockPos;)V")
     public void init(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, BlockState state, BlockPos blockPos, CallbackInfo ci) {
-        Optional<Identifier> identifier = MBPData.meetsPredicate(world, blockPos, state);
+        Optional<Identifier> identifier = MBPData.meetsPredicate(world, blockPos, state, false);
 
         MinecraftClient client = MinecraftClient.getInstance();
         if (identifier.isPresent()) {

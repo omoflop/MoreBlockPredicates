@@ -64,7 +64,7 @@ public class When implements WorldViewCondition {
     }
 
     @Override
-    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state) {
-        return conditions.meetsCondition(world,pos,state);
+    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
+        return conditions.meetsCondition(world,pos,state, isItem);
     }
 }

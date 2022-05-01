@@ -43,15 +43,19 @@ public class MBPResourceProvider implements ExtraModelProvider {
                     JsonArray overrides = asset.getAsJsonArray("overrides");
                     List<When> whenList = new ArrayList<>();
                     for(JsonElement overrideEntry : overrides) {
-                        When when = When.parse(overrideEntry);
-                        whenList.add(when);
+                        try {
+                            When when = When.parse(overrideEntry);
+                            whenList.add(when);
 
-                        wantedModels.addAll(when.getModels());
+                            wantedModels.addAll(when.getModels());
+                        } catch (Exception e) {
+                            MBPClient.log("ERROR", "Error found in file: " + id);
+                        }
                     }
                 }
 
-            } catch (JsonParseException | IOException ignored) {
-                MBPClient.log("ERROR",ignored.toString());
+            } catch (Exception e) {
+                MBPClient.log("ERROR", e.toString());
             }
         }
 

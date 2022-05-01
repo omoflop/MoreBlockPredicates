@@ -33,7 +33,7 @@ public class FallingBlockEntityRendererMixin {
 
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/BlockRenderManager;getModel(Lnet/minecraft/block/BlockState;)Lnet/minecraft/client/render/model/BakedModel;"),method = "render(Lnet/minecraft/entity/FallingBlockEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
     public BakedModel render(BlockRenderManager instance, BlockState state) {
-        Optional<Identifier> identifier = MBPData.meetsPredicate(fallingBlockEntity.world, fallingBlockEntity.getBlockPos(), state);
+        Optional<Identifier> identifier = MBPData.meetsPredicate(fallingBlockEntity.world, fallingBlockEntity.getBlockPos(), state, false);
 
         MinecraftClient client = MinecraftClient.getInstance();
         if (identifier.isPresent()) {

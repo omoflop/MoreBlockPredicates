@@ -25,6 +25,7 @@ public abstract class BlockModelPredicate implements WorldViewCondition {
         put("biome", InBiome::parse);
         put("state", IsBlockState::parse);
         put("light_range", LightRange::parse);
+        put("is_item", IsItem::parse);
     }};
 
     public static ArrayList<BlockModelPredicate> parseFromJson(JsonObject object) {

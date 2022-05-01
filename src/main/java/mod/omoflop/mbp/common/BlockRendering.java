@@ -15,10 +15,10 @@ import java.util.Optional;
 
 public class BlockRendering {
 
-    public static BakedModel tryModelOverride(BlockModels models, BlockRenderView world, BlockState state, BlockPos pos) {
+    public static BakedModel tryModelOverride(BlockModels models, BlockRenderView world, BlockState state, BlockPos pos, boolean isItem) {
         BlockRenderType blockRenderType = state.getRenderType();
         if (blockRenderType == BlockRenderType.MODEL) {
-            Optional<Identifier> override = MBPData.meetsPredicate(world, pos, state);
+            Optional<Identifier> override = MBPData.meetsPredicate(world, pos, state, isItem);
             if (override.isPresent()) {
                 BakedModel model;
                 BakedModelManagerAccess manager = ((BakedModelManagerAccess) models.getModelManager());

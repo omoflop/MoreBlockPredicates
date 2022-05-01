@@ -23,7 +23,7 @@ public class SodiumChunkRenderRebuildTaskMixin {
 
     @Redirect(method = "performBuild", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/BlockModels;getModel(Lnet/minecraft/block/BlockState;)Lnet/minecraft/client/render/model/BakedModel;"))
     public BakedModel getModelRedirect(BlockModels models, BlockState state) {
-        BakedModel newModel = BlockRendering.tryModelOverride(models, MinecraftClient.getInstance().world, state, new BlockPos(x, y, z));
+        BakedModel newModel = BlockRendering.tryModelOverride(models, MinecraftClient.getInstance().world, state, new BlockPos(x, y, z), false);
         if (newModel != null)
             return newModel;
 

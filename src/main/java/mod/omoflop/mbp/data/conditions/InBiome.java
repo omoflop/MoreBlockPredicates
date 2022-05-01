@@ -19,7 +19,7 @@ public class InBiome extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state) {
+    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
         World w = MinecraftClient.getInstance().world;;
         assert w != null;
         return (w.getBiome(pos).equals(Utils.getBiome(biomeID).get()));

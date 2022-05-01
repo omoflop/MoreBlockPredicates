@@ -19,7 +19,7 @@ public class LightRange extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockView _no, BlockPos pos, BlockState state) {
+    public boolean meetsCondition(BlockView _unused, BlockPos pos, BlockState state, boolean isItem) {
         World world = MinecraftClient.getInstance().world;
 
         boolean c = range.test(world.getLightLevel(pos));

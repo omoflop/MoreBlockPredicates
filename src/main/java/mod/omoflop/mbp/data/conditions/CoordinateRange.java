@@ -21,7 +21,7 @@ public class CoordinateRange extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state) {
+    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
         return range.test(pos.getComponentAlongAxis(this.axis));
     }
 

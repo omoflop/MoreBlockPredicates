@@ -32,7 +32,6 @@ import java.util.Optional;
 
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
-
     @Shadow protected abstract void renderBakedItemModel(BakedModel model, ItemStack stack, int light, int overlay, MatrixStack matrices, VertexConsumer vertices);
 
     @Shadow @Final private ItemModels models;
@@ -58,7 +57,7 @@ public abstract class ItemRendererMixin {
             }
         }
 
-        Optional<Identifier> identifier = MBPData.meetsPredicate(world, targetPos, Block.getBlockFromItem(stack.getItem()).getDefaultState());
+        Optional<Identifier> identifier = MBPData.meetsPredicate(world, targetPos, Block.getBlockFromItem(stack.getItem()).getDefaultState(), true);
 
         if (identifier.isPresent()) {
             BakedModelManagerAccess access = BakedModelManagerAccess.of(itemModels.getModelManager());
@@ -85,7 +84,7 @@ public abstract class ItemRendererMixin {
                 }
             }
 
-            Optional<Identifier> identifier = MBPData.meetsPredicate(world, targetPos, Block.getBlockFromItem(stack.getItem()).getDefaultState());
+            Optional<Identifier> identifier = MBPData.meetsPredicate(world, targetPos, Block.getBlockFromItem(stack.getItem()).getDefaultState(), true);
             if (identifier.isPresent()) {
                 BakedModelManagerAccess access = BakedModelManagerAccess.of(models.getModelManager());
                 model = access.reallyGetModel(identifier.get());

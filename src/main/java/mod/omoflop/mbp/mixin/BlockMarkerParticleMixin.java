@@ -26,7 +26,7 @@ public abstract class BlockMarkerParticleMixin extends SpriteBillboardParticle {
 
     @Inject(at = @At(value = "TAIL"), method = "<init>")
     public void init(ClientWorld world, double x, double y, double z, BlockState state, CallbackInfo ci) {
-        Optional<Identifier> identifier = MBPData.meetsPredicate(world, new BlockPos(x, y, z), state);
+        Optional<Identifier> identifier = MBPData.meetsPredicate(world, new BlockPos(x, y, z), state, true);
 
         MinecraftClient client = MinecraftClient.getInstance();
         if (identifier.isPresent()) {

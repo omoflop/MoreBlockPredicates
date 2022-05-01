@@ -53,8 +53,9 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
                     MBPClient.log("WARN","Block entry not found: " + blockTarget);
                 }
 
-            } catch (JsonParseException | IOException ignored) {
-                MBPClient.log("ERROR",ignored.toString());
+            } catch (Exception e) {
+                MBPClient.log("ERROR", "Error in file: " + id);
+                e.printStackTrace();
             }
         }
     }

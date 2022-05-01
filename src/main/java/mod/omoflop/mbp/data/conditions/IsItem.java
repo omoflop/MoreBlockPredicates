@@ -1,4 +1,4 @@
-package mod.omoflop.mbp.data.logic;
+package mod.omoflop.mbp.data.conditions;
 
 import com.google.gson.JsonElement;
 import mod.omoflop.mbp.data.BlockModelPredicate;
@@ -6,20 +6,21 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
-public class Not extends BlockModelPredicate {
+public class IsItem extends BlockModelPredicate {
 
-    final And condition;
+    final boolean shouldBeItem;
 
-    public Not(And condition) {
-        this.condition = condition;
+    public IsItem(boolean shouldBeItem) {
+        this.shouldBeItem = shouldBeItem;
     }
 
     @Override
     public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
-        return !condition.meetsCondition(world, pos, state, isItem);
+        return isItem == shouldBeItem;
     }
 
-    public static Not parse(JsonElement arg) {
-        return new Not(And.parse(arg));
+    public static IsItem parse(JsonElement arg) {
+        return new IsItem(arg.getAsBoolean());
     }
+
 }

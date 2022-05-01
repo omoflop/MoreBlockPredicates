@@ -15,10 +15,10 @@ import java.util.Optional;
 public class MBPData {
     public static final HashMap<Block, List<When>> PREDICATES = new HashMap<>();
 
-    public static Optional<Identifier> meetsPredicate(BlockView world, BlockPos pos, BlockState state) {
+    public static Optional<Identifier> meetsPredicate(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
         if (PREDICATES.containsKey(state.getBlock())) {
             for (When when : PREDICATES.get(state.getBlock())) {
-                if (when.meetsCondition(world, pos, state)) {
+                if (when.meetsCondition(world, pos, state, isItem)) {
                     long seed = MathHelper.hashCode(pos);
 
                     return Optional.of(when.getModel(seed));

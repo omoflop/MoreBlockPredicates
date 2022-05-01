@@ -14,8 +14,6 @@ import java.time.LocalTime;
 public class MBPClient implements ClientModInitializer {
 
     public static Entity currentEntity;
-
-
     public static void log(String level, String format, Object... params) {
         String ts = LocalTime.now().toString();
         String time = ts.substring(0, ts.indexOf("."));

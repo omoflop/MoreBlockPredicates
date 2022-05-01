@@ -21,9 +21,9 @@ public class Or extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state) {
+    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
         for (And action : conditions) {
-            if (action.meetsCondition(world, pos, state)) return true;
+            if (action.meetsCondition(world, pos, state, isItem)) return true;
         }
         return false;
     }
