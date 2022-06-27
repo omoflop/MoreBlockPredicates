@@ -11,10 +11,12 @@ import java.util.Set;
 
 public class MBPMixinPlugin implements IMixinConfigPlugin {
     public static boolean HAS_SODIUM = false;
+    public static boolean HAS_WORLDMESHER = false;
 
     @Override
     public void onLoad(String mixinPackage) {
         HAS_SODIUM = FabricLoader.getInstance().isModLoaded("sodium");
+        HAS_WORLDMESHER = FabricLoader.getInstance().isModLoaded("worldmesher");
         MBPClient.log("INFO", "Starting MBP" + (HAS_SODIUM ? " with sodium compatibility!" : ""));
     }
 
@@ -27,8 +29,10 @@ public class MBPMixinPlugin implements IMixinConfigPlugin {
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if (mixinClassName.equals("SodiumChunkRenderRebuildTaskMixin"))
             return HAS_SODIUM;
-        if (mixinClassName.equals("BlockRenderManagerMixin"))
-            return !HAS_SODIUM;
+        //if (mixinClassName.equals("BlockRenderManagerMixin"))
+        //    return !HAS_SODIUM;
+        if (mixinClassName.equals("WorldMeshMixin"))
+            return HAS_WORLDMESHER;
         return true;
     }
 

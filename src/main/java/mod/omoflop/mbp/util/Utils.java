@@ -35,16 +35,13 @@ public class Utils {
     public static Optional<Biome> getBiome(Identifier biomeId) {
         Optional<Registry<Biome>> registry = BIOME_REGISTRY.get();
         if (registry.isPresent()) {
-            return Optional.of(registry.get().get(biomeId));
+            return registry.get().getOrEmpty(biomeId);
         }
         return Optional.empty();
     }
     public static Optional<Identifier> getBiome(Biome biome) {
         Optional<Registry<Biome>> registry = BIOME_REGISTRY.get();
-        if (registry.isPresent()) {
-            return Optional.of(registry.get().getId(biome));
-        }
-        return Optional.empty();
+        return registry.map(biomes -> biomes.getId(biome));
     }
     public static Optional<Block> getBlock(Identifier blockId) {
         return Registry.BLOCK.getOrEmpty(blockId);
