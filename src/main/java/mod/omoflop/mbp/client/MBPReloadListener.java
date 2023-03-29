@@ -7,6 +7,9 @@ import mod.omoflop.mbp.MBPMixinPlugin;
 import mod.omoflop.mbp.data.logic.When;
 import mod.omoflop.mbp.util.Utils;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.fabricmc.loader.impl.util.log.Log;
+import net.fabricmc.loader.impl.util.log.LogCategory;
+import net.fabricmc.loader.impl.util.log.LogLevel;
 import net.minecraft.block.Block;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -15,7 +18,9 @@ import net.minecraft.util.Identifier;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.logging.Level;
 
 public class MBPReloadListener implements SimpleSynchronousResourceReloadListener {
     public static final Identifier IDENTIFIER = new Identifier("mbp:predicateloader");
@@ -49,11 +54,11 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
                     }
                     MBPData.PREDICATES.put(block.get(), Collections.unmodifiableList(whenList));
                 } else {
-                    MBPClient.log("WARN","Block entry not found: " + blockTarget);
+                    Log.logFormat(LogLevel.WARN, LogCategory.LOG,"Block entry not found in file %s: %s ", id, blockTarget);
                 }
 
             } catch (Exception e) {
-                MBPClient.log("ERROR", "Error in file: " + id);
+                Log.logFormat(LogLevel.ERROR, LogCategory.LOG, "Error in file: %s", id);
                 e.printStackTrace();
             }
         }
@@ -62,9 +67,6 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
     // i found this on stack overflow two months ago :)
     /**
      * Converts an input stream into a string, for reading JSONs and other files
-     * @param stream
-     * @return
-     * @throws IOException
      */
     static String inputStreamToString(InputStream stream) throws IOException {
         ByteArrayOutputStream result = new ByteArrayOutputStream();
@@ -72,7 +74,7 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
         for (int length; (length = stream.read(buffer)) != -1;) {
             result.write(buffer, 0, length);
         }
-        return result.toString("UTF-8");
+        return result.toString(StandardCharsets.UTF_8);
     }
 
 }

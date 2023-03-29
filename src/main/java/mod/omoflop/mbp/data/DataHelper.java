@@ -6,7 +6,7 @@ import com.google.gson.JsonParseException;
 import net.minecraft.predicate.NumberRange;
 import net.minecraft.util.math.BlockPos;
 
-public class DataHelper {
+public final class DataHelper {
 
     public static NumberRange.IntRange parseIntRange(JsonElement arg) {
         JsonObject object = arg.getAsJsonObject();
@@ -20,7 +20,7 @@ public class DataHelper {
             return NumberRange.IntRange.atMost(object.get("max").getAsInt());
         } else {
             // none?!?!??!?!?!?!?!?!
-            throw new JsonParseException("No min or max defined for light_range!");
+            throw new JsonParseException("No min or max defined for range!");
         }
     }
 

@@ -3,6 +3,7 @@ package mod.omoflop.mbp.mixin;
 import mod.omoflop.mbp.MBPData;
 import mod.omoflop.mbp.accessor.BakedModelManagerAccess;
 import mod.omoflop.mbp.client.MBPClient;
+import mod.omoflop.mbp.common.ContextIdentifiers;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumer;
@@ -57,7 +58,7 @@ public abstract class ItemRendererMixin {
             }
         }
 
-        Optional<Identifier> identifier = MBPData.meetsPredicate(world, targetPos, Block.getBlockFromItem(stack.getItem()).getDefaultState(), true);
+        Optional<Identifier> identifier = MBPData.meetsPredicate(world, targetPos, Block.getBlockFromItem(stack.getItem()).getDefaultState(), ContextIdentifiers.ITEM_HELD);
 
         if (identifier.isPresent()) {
             BakedModelManagerAccess access = BakedModelManagerAccess.of(itemModels.getModelManager());
@@ -69,8 +70,15 @@ public abstract class ItemRendererMixin {
         return itemModels.getModel(stack);
     }
 
-    @Redirect(method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformation$Mode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;renderBakedItemModel(Lnet/minecraft/client/render/model/BakedModel;Lnet/minecraft/item/ItemStack;IILnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;)V"))
-    private void renderBakedModelMixin(ItemRenderer itemRenderer, BakedModel model, ItemStack stack, int light, int overlay, MatrixStack matrices, VertexConsumer vertices) {
+    //@Redirect(method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformation$Mode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;renderBakedItemModel(Lnet/minecraft/client/render/model/BakedModel;Lnet/minecraft/item/ItemStack;IILnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;)V"))
+    @Redirect(
+            method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/render/item/ItemRenderer;renderBakedItemModel(Lnet/minecraft/client/render/model/BakedModel;Lnet/minecraft/item/ItemStack;IILnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;)V"
+            )
+    )
+    private void renderBakedModelMixin(ItemRenderer instance, BakedModel model, ItemStack stack, int light, int overlay, MatrixStack matrices, VertexConsumer vertices) {
         if (world == null) world = MinecraftClient.getInstance().world;
         if (entity == null) entity = MBPClient.currentEntity;
         if (entity == null) entity = MinecraftClient.getInstance().player;
@@ -84,7 +92,7 @@ public abstract class ItemRendererMixin {
                 }
             }
 
-            Optional<Identifier> identifier = MBPData.meetsPredicate(world, targetPos, Block.getBlockFromItem(stack.getItem()).getDefaultState(), true);
+            Optional<Identifier> identifier = MBPData.meetsPredicate(world, targetPos, Block.getBlockFromItem(stack.getItem()).getDefaultState(), ContextIdentifiers.ITEM);
             if (identifier.isPresent()) {
                 BakedModelManagerAccess access = BakedModelManagerAccess.of(models.getModelManager());
                 model = access.reallyGetModel(identifier.get());

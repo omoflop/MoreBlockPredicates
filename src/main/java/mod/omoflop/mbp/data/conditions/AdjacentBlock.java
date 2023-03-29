@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import mod.omoflop.mbp.data.BlockModelPredicate;
 import mod.omoflop.mbp.data.DataHelper;
 import net.minecraft.block.BlockState;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
@@ -23,12 +24,12 @@ public class AdjacentBlock extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
+    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, Identifier renderContext) {
         BlockState block = world.getBlockState(pos);
         boolean b = true;
         if (checkFullCube) b = block.isFullCube(world, pos);
-        if (checkTransparent) b &= block.isTranslucent(world, pos);
-        if (stateCondition != null) b &= stateCondition.meetsCondition(world, pos.add(offset), state, isItem);
+        if (checkTransparent) b &= block.isTransparent(world, pos);
+        if (stateCondition != null) b &= stateCondition.meetsCondition(world, pos.add(offset), state, renderContext);
         return b;
     }
 

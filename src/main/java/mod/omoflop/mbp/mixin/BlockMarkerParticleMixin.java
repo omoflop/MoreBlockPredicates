@@ -2,6 +2,7 @@ package mod.omoflop.mbp.mixin;
 
 import mod.omoflop.mbp.MBPData;
 import mod.omoflop.mbp.accessor.BakedModelManagerAccess;
+import mod.omoflop.mbp.common.ContextIdentifiers;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.BlockMarkerParticle;
@@ -26,7 +27,7 @@ public abstract class BlockMarkerParticleMixin extends SpriteBillboardParticle {
 
     @Inject(at = @At(value = "TAIL"), method = "<init>")
     public void init(ClientWorld world, double x, double y, double z, BlockState state, CallbackInfo ci) {
-        Optional<Identifier> identifier = MBPData.meetsPredicate(world, new BlockPos(x, y, z), state, true);
+        Optional<Identifier> identifier = MBPData.meetsPredicate(world, new BlockPos((int)x, (int)y, (int)z), state, ContextIdentifiers.MARKER_PARTICLE);
 
         MinecraftClient client = MinecraftClient.getInstance();
         if (identifier.isPresent()) {

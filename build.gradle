@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'fabric-loom' version '1.1-SNAPSHOT'
     id 'io.github.juuxel.loom-quiltflower' version '1.7.2'
     id 'maven-publish'
 }
@@ -38,7 +38,6 @@ repositories {
         url "https://maven.flashyreese.me/snapshots"
     }
     maven { url "https://maven.wispforest.io"}
-
 }
 
 dependencies {
@@ -47,10 +46,10 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    // Fabric API. This is technically optional, but you probably want it anyway.
+    // Fabric API. This is comment is technically optional, but you probably don't read it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modCompileOnly "me.jellysquid.mods:sodium-fabric:${project.sodium_version}"
+    modCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
     modCompileOnly "io.wispforest:worldmesher:${project.worldmesher_version}"
 
 }

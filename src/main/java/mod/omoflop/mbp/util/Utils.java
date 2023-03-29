@@ -2,10 +2,12 @@ package mod.omoflop.mbp.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.registry.DynamicRegistryManager;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.biome.Biome;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -24,7 +26,7 @@ public class Utils {
     public static final Supplier<Optional<Registry<Biome>>> BIOME_REGISTRY = () -> {
         DynamicRegistryManager drm = getRegistryManager();
         if (drm != null) {
-            Registry<Biome> b = drm.get(Registry.BIOME_KEY);
+            Registry<Biome> b = drm.get(RegistryKeys.BIOME);
             if (b != null) {
                 return Optional.of(b);
             }
@@ -44,7 +46,7 @@ public class Utils {
         return registry.map(biomes -> biomes.getId(biome));
     }
     public static Optional<Block> getBlock(Identifier blockId) {
-        return Registry.BLOCK.getOrEmpty(blockId);
+        return Registries.BLOCK.getOrEmpty(blockId);
     }
 
 }

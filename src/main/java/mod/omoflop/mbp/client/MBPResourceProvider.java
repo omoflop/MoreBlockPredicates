@@ -8,6 +8,9 @@ import net.fabricmc.fabric.api.client.model.ExtraModelProvider;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
 import net.fabricmc.fabric.api.client.model.ModelProviderException;
 import net.fabricmc.fabric.api.client.model.ModelResourceProvider;
+import net.fabricmc.loader.impl.util.log.Log;
+import net.fabricmc.loader.impl.util.log.LogCategory;
+import net.fabricmc.loader.impl.util.log.LogLevel;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.resource.Resource;
@@ -19,6 +22,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.logging.Level;
 
 
 public class MBPResourceProvider implements ExtraModelProvider {
@@ -40,24 +44,22 @@ public class MBPResourceProvider implements ExtraModelProvider {
 
                 if (block.isPresent()) {
                     JsonArray overrides = asset.getAsJsonArray("overrides");
-                    List<When> whenList = new ArrayList<>();
                     for(JsonElement overrideEntry : overrides) {
                         try {
                             When when = When.parse(overrideEntry);
-                            whenList.add(when);
 
                             wantedModels.addAll(when.getModels());
                         } catch (Exception e) {
-                            MBPClient.log("ERROR", "Error found in file: " + id);
+                            Log.logFormat(LogLevel.ERROR, LogCategory.LOG, "Error found in file: " + id);
                         }
                     }
                 }
 
             } catch (Exception e) {
-                MBPClient.log("ERROR", e.toString());
+                Log.logFormat(LogLevel.ERROR, LogCategory.LOG, e.toString());
             }
         }
 
-        wantedModels.forEach(out::accept);
+        wantedModels.forEach(out);
     }
 }

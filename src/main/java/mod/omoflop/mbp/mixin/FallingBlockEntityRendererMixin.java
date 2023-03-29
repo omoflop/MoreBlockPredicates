@@ -2,6 +2,7 @@ package mod.omoflop.mbp.mixin;
 
 import mod.omoflop.mbp.MBPData;
 import mod.omoflop.mbp.accessor.BakedModelManagerAccess;
+import mod.omoflop.mbp.common.ContextIdentifiers;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -33,7 +34,7 @@ public class FallingBlockEntityRendererMixin {
 
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/BlockRenderManager;getModel(Lnet/minecraft/block/BlockState;)Lnet/minecraft/client/render/model/BakedModel;"),method = "render(Lnet/minecraft/entity/FallingBlockEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
     public BakedModel render(BlockRenderManager instance, BlockState state) {
-        Optional<Identifier> identifier = MBPData.meetsPredicate(fallingBlockEntity.world, fallingBlockEntity.getBlockPos(), state, false);
+        Optional<Identifier> identifier = MBPData.meetsPredicate(fallingBlockEntity.world, fallingBlockEntity.getBlockPos(), state, ContextIdentifiers.FALLING_BLOCK);
 
         MinecraftClient client = MinecraftClient.getInstance();
         if (identifier.isPresent()) {

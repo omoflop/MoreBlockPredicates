@@ -8,8 +8,11 @@ import net.minecraft.block.pattern.CachedBlockPosition;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.command.argument.BlockArgumentParser;
 import net.minecraft.command.argument.BlockPredicateArgumentType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +24,7 @@ public class IsBlockState extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
+    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, Identifier renderContext) {
         if (blockStatePredicate == null) return true;
         return blockStatePredicate.test(new CachedBlockPosition(MinecraftClient.getInstance().world, pos, false));
     }
@@ -33,7 +36,7 @@ public class IsBlockState extends BlockModelPredicate {
             BlockPredicateArgumentType.BlockPredicate blockStateArgument = null;
             if (str != null) {
                 blockStateArgument = new BlockPredicateArgumentType.BlockPredicate() {
-                    final BlockArgumentParser.BlockResult res = BlockArgumentParser.block(Registry.BLOCK, str, false);
+                    final BlockArgumentParser.BlockResult res = BlockArgumentParser.block(Registries.BLOCK.getReadOnlyWrapper(), str, false);
 
                     @Override
                     public boolean hasNbt() {

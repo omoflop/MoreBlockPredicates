@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mod.omoflop.mbp.data.BlockModelPredicate;
 import net.minecraft.block.BlockState;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
@@ -21,14 +22,14 @@ public class And extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
+    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, Identifier renderContext) {
         for (BlockModelPredicate action : predicates) {
-            if (!action.meetsCondition(world, pos, state, isItem)) return false;
+            if (!action.meetsCondition(world, pos, state, renderContext)) return false;
         }
         return true;
     }
 
     public static And parse(JsonElement arg) {
-        return new And(ImmutableList.copyOf(BlockModelPredicate.parseFromJson(arg.getAsJsonObject())));
+        return new And(ImmutableList.copyOf(BlockModelPredicate.parseFromJson(arg)));
     }
 }

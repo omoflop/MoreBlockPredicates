@@ -5,17 +5,22 @@ import com.google.gson.JsonObject;
 import mod.omoflop.mbp.data.BlockModelPredicate;
 import mod.omoflop.mbp.data.WorldViewCondition;
 import net.minecraft.block.BlockState;
+import net.minecraft.text.ClickEvent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.Function;
 
 public class When implements WorldViewCondition {
 
     final And conditions;
     private final List<Identifier> applyModelList;
-    private final Random r = new Random();
 
     public When(And conditions, List<Identifier> applyModelList) {
         this.conditions = conditions;
@@ -32,7 +37,7 @@ public class When implements WorldViewCondition {
 
     public static When parse(JsonElement arg) {
         JsonObject object = arg.getAsJsonObject();
-        List<BlockModelPredicate> conditions = BlockModelPredicate.parseFromJson(object.getAsJsonObject("when"));
+        List<BlockModelPredicate> conditions = BlockModelPredicate.parseFromJson(object.get("when"));
 
         List<Identifier> applyModelList;
         JsonElement apply = object.get("apply");
@@ -64,7 +69,50 @@ public class When implements WorldViewCondition {
     }
 
     @Override
-    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
-        return conditions.meetsCondition(world,pos,state, isItem);
+    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, Identifier renderContext) {
+        return conditions.meetsCondition(world, pos, state, renderContext);
+    }
+
+    public static class Template {
+        enum ArgumentType implements StringIdentifiable {
+            STRING,
+            NUMBER,
+            OBJECT,
+            BOOLEAN;
+
+            @Override
+            public String asString() {
+                return name().toLowerCase();
+            }
+        }
+
+        public JsonElement jsonElement;
+
+        public Template(JsonElement jsonElement) {
+            this.jsonElement = jsonElement;
+        }
+
+        public When Build(JsonObject arguments) {
+            var map = new HashMap<String, Function<JsonElement, Void>>();
+
+            var entries = arguments.entrySet();
+            for (var entry : entries) {
+                String curArgumentName = entry.getKey();
+                String curArgType = entry.getValue().getAsString();
+
+                ArgumentType argType = ArgumentType.valueOf(curArgType);
+                switch (argType) {
+                    case STRING -> {
+                        map.put("$"+curArgumentName+"$", el -> el.se )
+                    }
+                    case NUMBER -> {
+                    }
+                    case OBJECT -> {
+                    }
+                    case BOOLEAN -> {
+                    }
+                }
+            }
+        }
     }
 }

@@ -10,14 +10,13 @@
     "BakedModelManagerMixin",
     "BlockDustParticleMixin",
     "BlockMarkerParticleMixin",
+    "BlockRenderManagerMixin",
     "FallingBlockEntityRendererMixin",
     "ItemEntityRendererMixin",
     "ItemFrameEntityRendererMixin",
     "ItemRendererMixin",
     "PistonBlockEntityRendererMixin",
-    "BlockRenderManagerMixin",
-    "SodiumChunkRenderRebuildTaskMixin",
-    "WorldMeshMixin"
+    "SodiumChunkRenderRebuildTaskMixin"
   ],
   "injectors": {
     "defaultRequire": 1

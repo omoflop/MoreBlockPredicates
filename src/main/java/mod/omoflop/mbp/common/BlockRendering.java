@@ -15,16 +15,17 @@ import java.util.Optional;
 
 public class BlockRendering {
 
-    public static BakedModel tryModelOverride(BlockModels models, BlockRenderView world, BlockState state, BlockPos pos, boolean isItem) {
+    public static BakedModel tryModelOverride(BlockModels models, BlockRenderView world, BlockState state, BlockPos pos, Identifier renderContext) {
         BlockRenderType blockRenderType = state.getRenderType();
         if (blockRenderType == BlockRenderType.MODEL) {
-            Optional<Identifier> override = MBPData.meetsPredicate(world, pos, state, isItem);
+            Optional<Identifier> override = MBPData.meetsPredicate(world, pos, state, renderContext);
             if (override.isPresent()) {
                 BakedModel model;
                 BakedModelManagerAccess manager = ((BakedModelManagerAccess) models.getModelManager());
                 model = manager.reallyGetModel(override.get());
                 if (model == models.getModelManager().getMissingModel()) {
-                    model = models.getModelManager().getModel(new ModelIdentifier(override.get().toString()));
+                    var overId = override.get();
+                    model = models.getModelManager().getModel(new ModelIdentifier(overId.getNamespace(), overId.getPath(), ""));
                 }
                 return model;
             }

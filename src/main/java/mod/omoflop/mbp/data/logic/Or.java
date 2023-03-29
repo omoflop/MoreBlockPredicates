@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import mod.omoflop.mbp.data.BlockModelPredicate;
 import net.minecraft.block.BlockState;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
@@ -21,9 +22,9 @@ public class Or extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
+    public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, Identifier renderContext) {
         for (And action : conditions) {
-            if (action.meetsCondition(world, pos, state, isItem)) return true;
+            if (action.meetsCondition(world, pos, state, renderContext)) return true;
         }
         return false;
     }

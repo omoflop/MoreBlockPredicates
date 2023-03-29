@@ -2,6 +2,7 @@ package mod.omoflop.mbp.mixin;
 
 import mod.omoflop.mbp.MBPData;
 import mod.omoflop.mbp.accessor.BakedModelManagerAccess;
+import mod.omoflop.mbp.common.ContextIdentifiers;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -35,7 +36,7 @@ public class PistonBlockEntityRendererMixin {
 
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/BlockRenderManager;getModel(Lnet/minecraft/block/BlockState;)Lnet/minecraft/client/render/model/BakedModel;"), method = "renderModel")
     public BakedModel renderModel(BlockRenderManager instance, BlockState state) {
-        Optional<Identifier> identifier = MBPData.meetsPredicate(tempWorld, tempBlockPos, state, false);
+        Optional<Identifier> identifier = MBPData.meetsPredicate(tempWorld, tempBlockPos, state, ContextIdentifiers.PISTON_PUSHING);
 
         MinecraftClient client = MinecraftClient.getInstance();
         if (identifier.isPresent()) {

@@ -6,6 +6,7 @@ import mod.omoflop.mbp.data.DataHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.predicate.NumberRange;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -19,18 +20,17 @@ public class LightRange extends BlockModelPredicate {
     }
 
     @Override
-    public boolean meetsCondition(BlockView _unused, BlockPos pos, BlockState state, boolean isItem) {
+    public boolean meetsCondition(BlockView _unused, BlockPos pos, BlockState state, Identifier renderContext) {
         World world = MinecraftClient.getInstance().world;
 
-        boolean c = range.test(world.getLightLevel(pos));
-            c = c || range.test(world.getLightLevel(pos.up()));
-            c = c || range.test(world.getLightLevel(pos.down()));
-            c = c || range.test(world.getLightLevel(pos.north()));
-            c = c || range.test(world.getLightLevel(pos.south()));
-            c = c || range.test(world.getLightLevel(pos.east()));
-            c = c || range.test(world.getLightLevel(pos.west()));
-
-        return c;
+        // ;-;
+        return range.test(world.getLightLevel(pos))
+             || range.test(world.getLightLevel(pos.up()))
+             || range.test(world.getLightLevel(pos.down()))
+             || range.test(world.getLightLevel(pos.north()))
+             || range.test(world.getLightLevel(pos.south()))
+             || range.test(world.getLightLevel(pos.east()))
+             || range.test(world.getLightLevel(pos.west()));
     }
 
     public static LightRange parse(JsonElement arg) {

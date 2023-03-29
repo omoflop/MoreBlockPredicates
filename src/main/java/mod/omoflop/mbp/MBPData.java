@@ -7,6 +7,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.WorldView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,19 +15,19 @@ import java.util.Optional;
 
 public class MBPData {
     public static final HashMap<Block, List<When>> PREDICATES = new HashMap<>();
+    public static final HashMap<Identifier, WhenTemplate>
 
-    public static Optional<Identifier> meetsPredicate(BlockView world, BlockPos pos, BlockState state, boolean isItem) {
+    public static Optional<Identifier> meetsPredicate(BlockView world, BlockPos pos, BlockState state, Identifier renderContext) {
         if (PREDICATES.containsKey(state.getBlock())) {
             for (When when : PREDICATES.get(state.getBlock())) {
-                if (when.meetsCondition(world, pos, state, isItem)) {
+                if (when.meetsCondition(world, pos, state, renderContext)) {
                     long seed = MathHelper.hashCode(pos);
 
                     return Optional.of(when.getModel(seed));
                 }
             }
         }
-        
+
         return Optional.empty();
     }
-
 }
