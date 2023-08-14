@@ -72,47 +72,4 @@ public class When implements WorldViewCondition {
     public boolean meetsCondition(BlockView world, BlockPos pos, BlockState state, Identifier renderContext) {
         return conditions.meetsCondition(world, pos, state, renderContext);
     }
-
-    public static class Template {
-        enum ArgumentType implements StringIdentifiable {
-            STRING,
-            NUMBER,
-            OBJECT,
-            BOOLEAN;
-
-            @Override
-            public String asString() {
-                return name().toLowerCase();
-            }
-        }
-
-        public JsonElement jsonElement;
-
-        public Template(JsonElement jsonElement) {
-            this.jsonElement = jsonElement;
-        }
-
-        public When Build(JsonObject arguments) {
-            var map = new HashMap<String, Function<JsonElement, Void>>();
-
-            var entries = arguments.entrySet();
-            for (var entry : entries) {
-                String curArgumentName = entry.getKey();
-                String curArgType = entry.getValue().getAsString();
-
-                ArgumentType argType = ArgumentType.valueOf(curArgType);
-                switch (argType) {
-                    case STRING -> {
-                        map.put("$"+curArgumentName+"$", el -> el.se )
-                    }
-                    case NUMBER -> {
-                    }
-                    case OBJECT -> {
-                    }
-                    case BOOLEAN -> {
-                    }
-                }
-            }
-        }
-    }
 }

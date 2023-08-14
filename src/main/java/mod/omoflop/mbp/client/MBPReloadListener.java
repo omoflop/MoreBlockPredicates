@@ -34,14 +34,12 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
     public void reload(ResourceManager manager) {
         MBPData.PREDICATES.clear();
 
-        JsonParser parser = new JsonParser();
         Map<Identifier, Resource> map = manager.findResources("mbp", id -> id.getPath().endsWith(".json"));
         for (Identifier id : map.keySet()) {
 
             try {
                 Identifier blockTarget = new Identifier(id.toString().substring(0,id.toString().length()-5).replace("mbp/", ""));
-                String jsonString = inputStreamToString(map.get(id).getInputStream());
-                JsonObject asset = parser.parse(jsonString).getAsJsonObject();
+                JsonObject asset = JsonParser.parseReader(map.get(id).getReader()).getAsJsonObject();
 
                 Optional<Block> block = Utils.getBlock(blockTarget);
 
@@ -63,18 +61,4 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
             }
         }
     }
-
-    // i found this on stack overflow two months ago :)
-    /**
-     * Converts an input stream into a string, for reading JSONs and other files
-     */
-    static String inputStreamToString(InputStream stream) throws IOException {
-        ByteArrayOutputStream result = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        for (int length; (length = stream.read(buffer)) != -1;) {
-            result.write(buffer, 0, length);
-        }
-        return result.toString(StandardCharsets.UTF_8);
-    }
-
 }

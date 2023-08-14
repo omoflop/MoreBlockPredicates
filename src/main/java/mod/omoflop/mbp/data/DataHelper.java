@@ -13,10 +13,10 @@ public final class DataHelper {
 
         boolean hasMin = object.has("min"), hasMax = object.has("max");
         if (hasMin && hasMax) {
-            return NumberRange.IntRange.between(object.get("min").getAsInt(),object.get("max").getAsInt());
+            return NumberRange.IntRange.between(object.get("min").getAsInt(), object.get("max").getAsInt());
         } else if (hasMin) {
             return NumberRange.IntRange.atLeast(object.get("min").getAsInt());
-        } else if (hasMin) {
+        } else if (hasMax) {
             return NumberRange.IntRange.atMost(object.get("max").getAsInt());
         } else {
             // none?!?!??!?!?!?!?!?!
@@ -28,6 +28,6 @@ public final class DataHelper {
         int x = offset.get("x").getAsInt();
         int y = offset.get("y").getAsInt();
         int z = offset.get("z").getAsInt();
-        return new BlockPos(x,y,z);
+        return new BlockPos(x, y, z);
     }
 }

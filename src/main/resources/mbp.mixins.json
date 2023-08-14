@@ -8,6 +8,7 @@
   ],
   "client": [
     "BakedModelManagerMixin",
+    "BlockDisplayEntityRendererMixin",
     "BlockDustParticleMixin",
     "BlockMarkerParticleMixin",
     "BlockRenderManagerMixin",
@@ -16,7 +17,7 @@
     "ItemFrameEntityRendererMixin",
     "ItemRendererMixin",
     "PistonBlockEntityRendererMixin",
-    "SodiumChunkRenderRebuildTaskMixin"
+    "compat.sodium.ChunkBuilderMeshingTaskMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -18,8 +18,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class IsBlockState extends BlockModelPredicate {
 
-    final @Nullable BlockPredicateArgumentType.BlockPredicate blockStatePredicate;
-    public IsBlockState(@Nullable BlockPredicateArgumentType.BlockPredicate blockStatePredicate) {
+    final @Nullable BlockPredicateImpl blockStatePredicate;
+    public IsBlockState(@Nullable BlockPredicateImpl blockStatePredicate) {
         this.blockStatePredicate = blockStatePredicate;
     }
 
@@ -33,29 +33,38 @@ public class IsBlockState extends BlockModelPredicate {
         try {
             String str = arg.getAsString();
 
-            BlockPredicateArgumentType.BlockPredicate blockStateArgument = null;
             if (str != null) {
-                blockStateArgument = new BlockPredicateArgumentType.BlockPredicate() {
-                    final BlockArgumentParser.BlockResult res = BlockArgumentParser.block(Registries.BLOCK.getReadOnlyWrapper(), str, false);
-
-                    @Override
-                    public boolean hasNbt() {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean test(CachedBlockPosition cachedBlockPosition) {
-                        return cachedBlockPosition.getBlockState().equals(res.blockState());
-                    }
-                };
+                return new IsBlockState(new BlockPredicateImpl(str));
             }
 
-            return new IsBlockState(blockStateArgument);
+            return null; // explode
         } catch (CommandSyntaxException e) {
            throw new RuntimeException(e);
         }
     }
 
+    private static class BlockPredicateImpl implements BlockPredicateArgumentType.BlockPredicate {
+        final BlockArgumentParser.BlockResult res;
+        public final String stateString;
+        public final boolean fuzzy;
+
+        public BlockPredicateImpl(String stateString) throws CommandSyntaxException {
+            this.stateString = stateString;
+            fuzzy = !stateString.contains("[");
+            res = BlockArgumentParser.block(Registries.BLOCK.getReadOnlyWrapper(), stateString, false);
+        }
+
+        @Override
+        public boolean hasNbt() {
+            return false;
+        }
+
+        @Override
+        public boolean test(CachedBlockPosition cachedBlockPosition) {
+            if (fuzzy) return cachedBlockPosition.getBlockState().getBlock() == res.blockState().getBlock();
+            return cachedBlockPosition.getBlockState().equals(res.blockState());
+        }
+    }
 
 
 }

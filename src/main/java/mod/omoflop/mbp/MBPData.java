@@ -15,7 +15,6 @@ import java.util.Optional;
 
 public class MBPData {
     public static final HashMap<Block, List<When>> PREDICATES = new HashMap<>();
-    public static final HashMap<Identifier, WhenTemplate>
 
     public static Optional<Identifier> meetsPredicate(BlockView world, BlockPos pos, BlockState state, Identifier renderContext) {
         if (PREDICATES.containsKey(state.getBlock())) {
