@@ -23,8 +23,17 @@ public class MBPMixinPlugin implements IMixinConfigPlugin {
         HAS_SODIUM = FabricLoader.getInstance().isModLoaded("sodium");
         HAS_WORLDMESHER = FabricLoader.getInstance().isModLoaded("worldmesher");
         StringBuilder builder = new StringBuilder();
-        builder.append("Starting MBP");
-        Log.logFormat(LogLevel.INFO, LogCategory.LOG, "Starting MBP" + (HAS_SODIUM ? " with sodium compatibility!" : ""));
+        if (HAS_SODIUM) {
+            builder.append("sodium, ");
+        }
+        if (HAS_WORLDMESHER) {
+            builder.append("worldmesher, ");
+        }
+        String str = "Starting MBP";
+        if (builder.length() > 0) {
+            str = str + " with " + builder.substring(0, builder.length()-2);
+        }
+        MBPClient.LOGGER.debug(str);
     }
 
     @Override

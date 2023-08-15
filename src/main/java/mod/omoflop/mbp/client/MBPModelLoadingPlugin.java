@@ -55,13 +55,15 @@ public class MBPModelLoadingPlugin implements PreparableModelLoadingPlugin<HashS
 
                                     wantedModels.addAll(when.getModels());
                                 } catch (Exception e) {
-                                    Log.logFormat(LogLevel.ERROR, LogCategory.LOG, "Error found in file: " + id);
+                                    MBPClient.LOGGER.error("Error found in file: " + id);
+                                    e.printStackTrace();
                                 }
                             }
                         }
 
                     } catch (Exception e) {
-                        Log.logFormat(LogLevel.ERROR, LogCategory.LOG, e.toString());
+                        MBPClient.LOGGER.error("Error found in file: " + id);
+                        e.printStackTrace();
                     }
                 }
                 return wantedModels;

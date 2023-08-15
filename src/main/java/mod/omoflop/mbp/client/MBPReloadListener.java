@@ -52,11 +52,11 @@ public class MBPReloadListener implements SimpleSynchronousResourceReloadListene
                     }
                     MBPData.PREDICATES.put(block.get(), Collections.unmodifiableList(whenList));
                 } else {
-                    Log.logFormat(LogLevel.WARN, LogCategory.LOG,"Block entry not found in file %s: %s ", id, blockTarget);
+                    MBPClient.LOGGER.error("Block entry not found in file %s: %s ".formatted(id, blockTarget));
                 }
 
             } catch (Exception e) {
-                Log.logFormat(LogLevel.ERROR, LogCategory.LOG, "Error in file: %s", id);
+                MBPClient.LOGGER.error("Error in file: %s".formatted(id));
                 e.printStackTrace();
             }
         }
